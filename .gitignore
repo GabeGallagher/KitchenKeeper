@@ -9,7 +9,7 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 [Pp]ackages/*
-[Pp]ackages/packages-lock.json
+![Pp]ackages/packages-lock.json
 
 # Never ignore Asset meta data
 ![Aa]ssets/**/*.meta
