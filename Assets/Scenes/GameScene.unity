@@ -983,6 +983,11 @@ PrefabInstance:
       propertyPath: interactDistance
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5076300526010600170, guid: a76bc7337cc271241bd83ba7fd4d1079,
+        type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1,20 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+    public class OnSelectedCounterChangedEventArgs : EventArgs
+    {
+        public CounterController selectedCounter;
+    }
+
     private InputManager inputManager;
-
     private Vector3 lastInteractDir;
-
-    [SerializeField] private LayerMask layerMask;
-
-    [SerializeField] private float moveSpeed, rotateSpeed, playerRadius, playerHeight, interactDistance;
-
+    private CounterController selectedCounter;
     private bool isWalking;
 
+    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private float moveSpeed, rotateSpeed, playerRadius, playerHeight, interactDistance;
+
     public bool IsWalking { get => isWalking; }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("There is more than one instance of the Player Controller");
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
@@ -22,6 +41,15 @@ public class PlayerController : MonoBehaviour
         if (inputManager == null )
         {
             Debug.LogError("Input Manager is null");
+        }
+        inputManager.OnInteractAction += InputManager_OnInteractAction;
+    }
+
+    private void InputManager_OnInteractAction(object sender, System.EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            selectedCounter.Interact();
         }
     }
 
@@ -46,12 +74,19 @@ public class PlayerController : MonoBehaviour
         {
             if (raycastHitInfo.transform.TryGetComponent(out CounterController counter))
             {
-                counter.Interact();
+                if (counter != selectedCounter)
+                {
+                    SetSelectedCounter(counter);
+                }
+            }
+            else
+            {
+                SetSelectedCounter(null);
             }
         }
         else
         {
-            Debug.Log("-");
+            SetSelectedCounter(null);
         }
     }
 
@@ -91,5 +126,15 @@ public class PlayerController : MonoBehaviour
         isWalking = moveDir != Vector3.zero;
 
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
+    }
+
+    private void SetSelectedCounter(CounterController selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
+        {
+            selectedCounter = selectedCounter
+        });
     }
 }
