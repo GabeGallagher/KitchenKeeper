@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CounterController : MonoBehaviour, IKitchenObjectParent
 {
-    [SerializeField] protected KitchenObjectSO kitchenObjectSO;
     [SerializeField] private Transform counterTopPoint;
 
     protected KitchenObject kitchenObject;
@@ -36,13 +35,18 @@ public class CounterController : MonoBehaviour, IKitchenObjectParent
 
     public virtual void Interact(PlayerController player)
     {
-        if(kitchenObject == null && player.HasKitchenObject())
+        if(!HasKitchenObject() && player.HasKitchenObject())
         {
             player.GetKitchenObject().KitchenObjectParent = this;
         }
-        else if (!player.HasKitchenObject())
+        else if (!player.HasKitchenObject() && kitchenObject != null)
         {
             kitchenObject.KitchenObjectParent = player;
         }
+    }
+
+    public virtual void InteractAlternate(PlayerController player)
+    {
+        Debug.LogError("CounterController.InteractAlternate called...");
     }
 }

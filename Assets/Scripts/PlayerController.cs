@@ -45,6 +45,15 @@ public class PlayerController : MonoBehaviour, IKitchenObjectParent
             Debug.LogError("Input Manager is null");
         }
         inputManager.OnInteractAction += InputManager_OnInteractAction;
+        inputManager.OnInteractAlternateAction += InputManager_OnInteractAlternateAction;
+    }
+
+    private void InputManager_OnInteractAlternateAction(object sender, EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            selectedCounter.InteractAlternate(this);
+        }
     }
 
     private void InputManager_OnInteractAction(object sender, System.EventArgs e)
