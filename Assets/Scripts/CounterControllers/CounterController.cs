@@ -47,6 +47,6 @@ public class CounterController : MonoBehaviour, IKitchenObjectParent
 
     public virtual void InteractAlternate(PlayerController player)
     {
-        Debug.LogError("CounterController.InteractAlternate called...");
+        //Debug.LogError("CounterController.InteractAlternate called...");
     }
 }
