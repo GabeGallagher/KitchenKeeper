@@ -39,6 +39,13 @@ public class CuttingCounterController : CounterController, IHasProgress
             {
                 kitchenObject.KitchenObjectParent = player;
             }
+            else if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+            {
+                if (plateKitchenObject.TryAddIngredient(kitchenObject.KitchenObjectSO))
+                {
+                    kitchenObject.DestroySelf();
+                }
+            }
         }
     }
 

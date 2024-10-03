@@ -75,6 +75,25 @@ public class StoveCounterController : CounterController, IHasProgress
                     progressNormalized = 0f
                 });
             }
+            else if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+            {
+                if (plateKitchenObject.TryAddIngredient(kitchenObject.KitchenObjectSO))
+                {
+                    kitchenObject.DestroySelf();
+
+                    state = State.Idle;
+
+                    OnStateChanged?.Invoke(this, new OnStateChangeEventArgs
+                    {
+                        state = state
+                    });
+
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                    {
+                        progressNormalized = 0f
+                    });
+                }
+            }
         }
     }
 

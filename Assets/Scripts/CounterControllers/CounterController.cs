@@ -43,6 +43,26 @@ public class CounterController : MonoBehaviour, IKitchenObjectParent
         {
             kitchenObject.KitchenObjectParent = player;
         }
+        else if (player.HasKitchenObject() && kitchenObject != null)
+        {
+            if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+            {
+                if (plateKitchenObject.TryAddIngredient(kitchenObject.KitchenObjectSO))
+                {
+                    kitchenObject.DestroySelf();
+                }
+            }
+            else
+            {
+                if (GetKitchenObject().TryGetPlate(out plateKitchenObject))
+                {
+                    if (plateKitchenObject.TryAddIngredient(player.GetKitchenObject().KitchenObjectSO))
+                    {
+                        player.GetKitchenObject().DestroySelf();
+                    }
+                }
+            }
+        }
     }
 
     public virtual void InteractAlternate(PlayerController player)
