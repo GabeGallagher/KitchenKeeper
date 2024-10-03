@@ -206,7 +206,6 @@ public class StoveCounterController : CounterController, IHasProgress
                     Debug.LogError("Invalid state: " + state.ToString());
                     break;
             }
-            Debug.Log(state.ToString());
         }
     }
 }
