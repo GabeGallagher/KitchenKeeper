@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Burger
   m_EditorClassIdentifier: 
   kitchenObjectSOList:
-  - {fileID: 11400000, guid: 6d326089f523c854d910045c9e87a2a7, type: 2}
-  - {fileID: 11400000, guid: 780186b2859e9ea42b15e51d0c19bb3b, type: 2}
+  - {fileID: 11400000, guid: 1aab6bb1347ae5e43804542585492cda, type: 2}
+  - {fileID: 11400000, guid: 38f4c735f562637439d9afa6e19cc473, type: 2}
