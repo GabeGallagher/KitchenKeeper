@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DeliveryManager : MonoBehaviour
 {
-    public event EventHandler OnRecipeSpawned, OnRecipeCompleted;
+    public event EventHandler OnRecipeSpawned, OnRecipeCompleted, OnRecipeSuccess, OnRecipeFail;
     public static DeliveryManager Instance { get; private set; }
 
     [SerializeField] RecipeListSO recipeListSO;
@@ -52,10 +52,12 @@ public class DeliveryManager : MonoBehaviour
                     waitingRecipeList.RemoveAt(i);
 
                     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
+                    OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
                     return;
                 }
             }
         }
+        OnRecipeFail?.Invoke(this, EventArgs.Empty);
         Debug.Log("Player did not deliver correct meal");
     }
 

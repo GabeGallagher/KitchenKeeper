@@ -6,6 +6,13 @@ public class DeliveryCounterController : CounterController
 {
     [SerializeField] private GameObject deliveryArrow;
 
+    public static DeliveryCounterController Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         deliveryArrow.SetActive(true);
