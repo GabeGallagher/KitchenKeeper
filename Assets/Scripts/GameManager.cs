@@ -17,39 +17,51 @@ public class GameManager : MonoBehaviour
         GameOver,
     }
 
-    private State state;
+    private State gameState;
     private float waitingToStartTimer = 1f;
     private float countdownToStartTimer = 3f;
-    private float gamePlayingTimer = 10f;
+    private float gameTime;
+
+    [SerializeField] private float maxGameTime = 5f;
 
     public float CountdownToStartTimer { get => countdownToStartTimer; }
 
     public bool IsGamePlaying()
     {
-        return state == State.GamePlaying;
+        return gameState == State.GamePlaying;
     }
 
     public bool IsCountdownToStartActive()
     {
-        return state == State.CountdownToStart;
+        return gameState == State.CountdownToStart;
+    }
+
+    public bool IsGameOver()
+    {
+        return gameState == State.GameOver;
+    }
+
+    public float GetGameTimeNormalized()
+    {
+        return 1 - (gameTime / maxGameTime);
     }
 
     private void Awake()
     {
         Instance = this;
 
-        state = State.WaitingToStart;
+        gameState = State.WaitingToStart;
     }
 
     private void Update()
     {
-        switch (state)
+        switch (gameState)
         {
             case State.WaitingToStart:
                 waitingToStartTimer -= Time.deltaTime;
                 if (waitingToStartTimer <= 0f)
                 {
-                    state = State.CountdownToStart;
+                    gameState = State.CountdownToStart;
 
                     OnStateChange?.Invoke(this, EventArgs.Empty);
                 }
@@ -58,16 +70,18 @@ public class GameManager : MonoBehaviour
                 countdownToStartTimer -= Time.deltaTime;
                 if (countdownToStartTimer <= 0f)
                 {
-                    state = State.GamePlaying;
+                    gameState = State.GamePlaying;
+
+                    gameTime = maxGameTime;
 
                     OnStateChange?.Invoke(this, EventArgs.Empty);
                 }
                 break;
             case State.GamePlaying:
-                gamePlayingTimer -= Time.deltaTime;
-                if (gamePlayingTimer <= 0f)
+                gameTime -= Time.deltaTime;
+                if (gameTime <= 0f)
                 {
-                    state = State.GameOver;
+                    gameState = State.GameOver;
 
                     OnStateChange?.Invoke(this, EventArgs.Empty);
                 }
