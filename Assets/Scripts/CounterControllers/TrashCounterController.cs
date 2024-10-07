@@ -16,4 +16,9 @@ public class TrashCounterController : CounterController
             OnAnyObjectTrashed?.Invoke(this, EventArgs.Empty);
         }
     }
+
+    new public static void ResetStaticData()
+    {
+        OnAnyObjectTrashed = null;
+    }
 }

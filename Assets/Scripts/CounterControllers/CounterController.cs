@@ -77,4 +77,9 @@ public class CounterController : MonoBehaviour, IKitchenObjectParent
     {
         //Debug.LogError("CounterController.InteractAlternate called...");
     }
+
+    public static void ResetStaticData()
+    {
+        OnAnyObjectPlacedHere = null;
+    }
 }

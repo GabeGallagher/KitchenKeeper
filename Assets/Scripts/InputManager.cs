@@ -5,10 +5,16 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public event EventHandler OnInteractAction;
-    public event EventHandler OnInteractAlternateAction;
+    public static InputManager Instance {  get; private set; }
+
+    public event EventHandler OnInteractAction, OnInteractAlternateAction, OnPause;
 
     private PlayerInputActions playerInputActions;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -16,6 +22,12 @@ public class InputManager : MonoBehaviour
         playerInputActions.Player.Enable();
         playerInputActions.Player.Interact.performed += Interact_performed;
         playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
+        playerInputActions.Player.Pause.performed += Pause_performed;
+    }
+
+    private void Pause_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnPause?.Invoke(this, EventArgs.Empty);
     }
 
     private void InteractAlternate_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -28,16 +40,18 @@ public class InputManager : MonoBehaviour
         OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public Vector2 GetNormalizedMovementVector()
     {
         Vector2 inputVector = playerInputActions.Player.Move.ReadValue<Vector2>();
 
         return inputVector.normalized;
+    }
+
+    private void OnDestroy()
+    {
+        playerInputActions.Player.Interact.performed -= Interact_performed;
+        playerInputActions.Player.InteractAlternate.performed -= InteractAlternate_performed;
+        playerInputActions.Player.Pause.performed -= Pause_performed;
+        playerInputActions.Dispose();
     }
 }

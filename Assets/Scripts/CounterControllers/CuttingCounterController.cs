@@ -109,4 +109,9 @@ public class CuttingCounterController : CounterController, IHasProgress
         }
         return null;
     }
+
+    new public static void ResetStaticData()
+    {
+        OnAnyCut = null;
+    }
 }
