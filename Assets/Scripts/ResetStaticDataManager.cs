@@ -12,10 +12,4 @@ public class ResetStaticDataManager : MonoBehaviour
 
         TrashCounterController.ResetStaticData();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

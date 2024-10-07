@@ -10,6 +10,10 @@ public class SoundManager : MonoBehaviour
 
     private DeliveryCounterController deliveryCounter;
 
+    private float volume = 1f;
+
+    public float Volume { get => volume; }
+
     private void Awake()
     {
         Instance = this;
@@ -67,13 +71,23 @@ public class SoundManager : MonoBehaviour
         PlaySound(audioClipRefSO.deliverySuccess, deliveryCounter.transform.position);
     }
 
-    public void PlaySound(AudioClip[] audioClipArray, Vector3 position, float volume = 1f)
+    public void PlaySound(AudioClip[] audioClipArray, Vector3 position, float volumeMultiplier = 1f)
     {
-        AudioSource.PlayClipAtPoint(audioClipArray[Random.Range(0, audioClipArray.Length - 1)], position, volume);
+        AudioSource.PlayClipAtPoint(audioClipArray[Random.Range(0, audioClipArray.Length - 1)], position, volume * volumeMultiplier);
     }
 
-    public void PlaySound(AudioClip audioClip, Vector3 position, float volume = 1f)
+    public void PlaySound(AudioClip audioClip, Vector3 position, float volumeMultiplier = 1f)
     {
-        AudioSource.PlayClipAtPoint(audioClip, position, volume);
+        AudioSource.PlayClipAtPoint(audioClip, position, volume * volumeMultiplier);
+    }
+
+    public void ChangeVolume()
+    {
+        volume += 0.1f;
+
+        if(volume > 1f)
+        {
+            volume = 0f;
+        }
     }
 }
